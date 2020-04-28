@@ -14,11 +14,12 @@ train_dataloader = torch.utils.data.DataLoader(
                         transform=torchvision.transforms.Compose([
                             GroupRandomHorizontalFlip(),
                             GroupColorJittering(brightness=0.5, contrast=0.5, saturation=0, hue=0),
+                            GroupMultiScaleCrop(256),
                             GroupScale(256),
                             ToTorchFormatTensor(True)])),
                     batch_size=1, shuffle=False,
                     num_workers=0, pin_memory=True)
-
+print(len(train_dataloader))
 for data in train_dataloader:
     print(data['frames'].shape)
     print(data['label_idx'])
