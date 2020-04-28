@@ -18,6 +18,22 @@ class GroupScale(object):
     def __call__(self, images):
         return [[self.worker(img) for img in snpt] for snpt in images]
 
+class GroupRandomHorizontalFlip(object):
+    def __init__(self, prob=0.5):
+        self.worker = torchvision.transforms.RandomHorizontalFlip(p=prob)
+
+    def __call__(self, images):
+        return [[self.worker(img) for img in snpt] for snpt in images]
+
+class GroupColorJittering(object):
+    def __init__(self, brightness=0, contrast=0, saturation=0, hue=0):
+        self.worker = torchvision.transforms.ColorJitter(
+                        brightness=brightness, contrast=contrast,
+                        saturation=saturation, hue=hue)
+
+    def __call__(self, images):
+        return [[self.worker(img) for img in snpt] for snpt in images]
+
 class ToTorchFormatTensor(object):
     """ Converts a PIL.Image (RGB) or numpy.ndarray (H x W x C) in the range [0, 255]
     to a torch.FloatTensor of shape (C x H x W) in the range [0.0, 1.0] """

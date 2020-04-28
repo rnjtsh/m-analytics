@@ -11,7 +11,6 @@ class VideoDataset(Dataset):
         self.dataset_name = dataset_name
         self.split_type = split_type
         self.image_files = os.path.join('data', dataset_name, split_type)
-        # self.labels_path = os.path.join('data', dataset_name, 'labels')
         self.class_dict = self._get_classes()
         self.modality = modality
         self.transform = transform

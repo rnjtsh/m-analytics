@@ -12,7 +12,10 @@ from dataset.transforms import *
 train_dataloader = torch.utils.data.DataLoader(
                     VideoDataset('custom', 'train',
                         transform=torchvision.transforms.Compose([
-                            GroupScale(256),ToTorchFormatTensor(True)])),
+                            GroupRandomHorizontalFlip(),
+                            GroupColorJittering(brightness=0.5, contrast=0.5, saturation=0, hue=0),
+                            GroupScale(256),
+                            ToTorchFormatTensor(True)])),
                     batch_size=1, shuffle=False,
                     num_workers=0, pin_memory=True)
 
