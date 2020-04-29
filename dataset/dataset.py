@@ -7,10 +7,10 @@ from torch.utils.data import Dataset, DataLoader
 
 class VideoDataset(Dataset):
     def __init__(self, dataset_name, split_type,
-                modality='RGB', transform=None):
+                split=1,modality='RGB', transform=None):
         self.dataset_name = dataset_name
         self.split_type = split_type
-        self.image_files = os.path.join('data', dataset_name, 'Extracted_Split', split_type)
+        self.image_files = os.path.join('data', dataset_name, 'Extracted_Split' + str(split), split_type)
         self.class_dict = self._get_classes()
         self.modality = modality
         self.transform = transform

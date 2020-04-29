@@ -19,6 +19,13 @@ class GroupScale(object):
     def __call__(self, images):
         return [[self.worker(img) for img in snpt] for snpt in images]
 
+class GroupCenterCrop(object):
+    def __init__(self, size):
+        self.worker = torchvision.transforms.CenterCrop(size)
+
+    def __call__(self, images):
+        return [[self.worker(img) for img in snpt] for snpt in images]
+
 class GroupRandomHorizontalFlip(object):
     def __init__(self, prob=0.5):
         self.worker = torchvision.transforms.RandomHorizontalFlip(p=prob)
@@ -36,7 +43,6 @@ class GroupColorJittering(object):
         return [[self.worker(img) for img in snpt] for snpt in images]
 
 class GroupMultiScaleCrop(object):
-
     def __init__(self, input_size, scales=None, max_distort=1, fix_crop=True, more_fix_crop=True):
         self.scales = scales if scales is not None else [1, .875, .75, .66]
         self.max_distort = max_distort
