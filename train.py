@@ -5,8 +5,8 @@ import torchvision
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.optim
-from easydict import EasyDict as edict
-from tensorboardX import SummaryWriter
+# from easydict import EasyDict as edict
+# from tensorboardX import SummaryWriter
 from torch.nn.utils import clip_grad_norm_
 
 from utils import *
@@ -14,26 +14,32 @@ from arg import parser
 from dataset.dataset import *
 from dataset.transforms import *
 
-# def main():
-#     train_dataloader = torch.utils.data.DataLoader(
-#                         VideoDataset('custom', 'train', '1',
-#                             transform=torchvision.transforms.Compose([
-#                                 GroupRandomHorizontalFlip(),
-#                                 GroupColorJittering(brightness=0.5, contrast=0.5, saturation=0, hue=0),
-#                                 GroupMultiScaleCrop(256),
-#                                 GroupScale(256),
-#                                 ToTorchFormatTensor(True)])),
-#                         batch_size=1, shuffle=False,
-#                         num_workers=0, pin_memory=True)
-#     val_dataloader = torch.utils.data.DataLoader(
-#                         VideoDataset('custom', 'val', '1',
-#                             transform=torchvision.transforms.Compose([
-#                                 GroupCenterCrop(256),
-#                                 GroupScale(256),
-#                                 ToTorchFormatTensor(True)])),
-#                         batch_size=1, shuffle=False,
-#                         num_workers=0, pin_memory=True)
-    
+def main():
+    train_dataloader = torch.utils.data.DataLoader(
+                        VideoDataset('custom', 'train', '1',
+                            transform=torchvision.transforms.Compose([
+                                GroupRandomHorizontalFlip(),
+                                GroupColorJittering(brightness=0.5, contrast=0.5, saturation=0, hue=0),
+                                GroupMultiScaleCrop(256),
+                                GroupScale(256),
+                                ToTorchFormatTensor(True)])),
+                        batch_size=1, shuffle=False,
+                        num_workers=0, pin_memory=True)
+    # val_dataloader = torch.utils.data.DataLoader(
+    #                     VideoDataset('custom', 'val', '1',
+    #                         transform=torchvision.transforms.Compose([
+    #                             GroupCenterCrop(256),
+    #                             GroupScale(256),
+    #                             ToTorchFormatTensor(True)])),
+    #                     batch_size=1, shuffle=False,
+    #                     num_workers=0, pin_memory=True)
+
+    for i, p in enumerate(train_dataloader):
+        print(i)
+        print(p)
+        break
+
+''' 
 best_prec1 = 0
 
 def main():
@@ -93,7 +99,6 @@ def main():
             print(("=> no checkpoint found at '{}'".format(args.resume)))
 
     # Check with Rishubh if any changes are to be made
-    '''
     if args.tune_from:
         print(("=> fine-tuning from '{}'".format(args.tune_from)))
         sd = torch.load(args.tune_from)
@@ -122,7 +127,7 @@ def main():
             sd = {k: v for k, v in sd.items() if 'conv1.weight' not in k}
         model_dict.update(sd)
         model.load_state_dict(model_dict)
-    '''
+
 
     if args.temporal_pool and not args.resume:
         make_temporal_pool(model.module.base_model, args.num_segments)
@@ -337,5 +342,6 @@ def validate(val_loader, model, criterion, epoch, log=None, tf_writer=None):
 
     return top1.avg
 
+'''
 if __name__ == '__main__':
     main()
